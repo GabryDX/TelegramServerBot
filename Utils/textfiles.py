@@ -49,6 +49,11 @@ def exists_dir(directory):
             raise
 
 
+def make_dir_if_not_exists(directory):
+    if not os.path.exists(directory):
+        os.makedirs(directory)
+
+
 # ritorna True se il file è vuoto
 def isEmpty(filename):
     return os.stat(filename).st_size == 0

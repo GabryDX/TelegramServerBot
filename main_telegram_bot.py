@@ -17,7 +17,7 @@ from telegram.ext import Application, ContextTypes, CommandHandler, ApplicationB
 
 from Commands import commands
 from Utils import constants, server_info
-from Utils.textfiles import exists_dir
+from Utils.textfiles import exists_dir, make_dir_if_not_exists
 
 from Objects import admin, utenti
 
@@ -52,14 +52,14 @@ def main():
 	"""Run the bot."""
 	global bot
 
-	if not os.path.exists(constants.CHAT_DATA_FOLDER):
-		os.makedirs(constants.CHAT_DATA_FOLDER)
+	make_dir_if_not_exists(constants.CHAT_DATA_FOLDER)
+	make_dir_if_not_exists(DATABASE_FOLDER)
+	make_dir_if_not_exists(USER_FOLDER)
 
 	print("\n --- AVVIO DEL BOT ---\n")
+
 	admin.reload_admin()
 	utenti.reload_chat_ids()
-	exists_dir(DATABASE_FOLDER)
-	exists_dir(USER_FOLDER)
 
 	# Telegram Bot Authorization Token
 	# builder = Application.builder()
