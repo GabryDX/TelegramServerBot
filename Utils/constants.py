@@ -1,0 +1,2 @@
+BOT_TOKEN = 'BOT-TOKEN'
+CHAT_DATA_FOLDER = "./ChatData/"
