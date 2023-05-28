@@ -16,7 +16,7 @@ def get_all_info():
     str += "\nCPU modello: " + get_cpu_model_name()
     cpu_temp = get_cpu_temperature()
     if cpu_temp:
-        str += "\nCPU Temperatura: " + cpu_temp + " C°"
+        str += "\nCPU Temperatura: " + cpu_temp + " °C"
     str += "\nCPU usata: " + get_cpu_use() + " %"
     ram = get_ram_info()
     str += "\nRAM totale: " + ram[0] + " KB"
@@ -39,7 +39,11 @@ def get_cpu_model_name():
 # Return CPU temperature as a character string
 def get_cpu_temperature():
     res = os.popen('vcgencmd measure_temp').readline()
-    return res.replace("temp=", "").replace("'C\n", "")
+    if "not found" in res:
+        res = os.popen('sensors | grep "Package id" | head -n 1 cut -d"\\"" -f5')
+        return res[1:-2]
+    else:
+        return res.replace("temp=", "").replace("'C\n", "")
 
 
 # Return RAM information (unit=kb) in a list
