@@ -7,33 +7,33 @@ import platform
 
 
 def get_all_info():
-    str = ""
+    info_str = ""
     platform_system = platform.system()
     if platform_system == "Linux":
         server = get_raspberry_model()
         if server:
-            str += "Server: " + server
+            info_str += "Server: " + server
         os_info = get_os_info()
         if os_info:
-            str += "\nOS: " + os_info
-        str += "\nCPU modello: " + get_cpu_model_name()
+            info_str += "\nOS: " + os_info
+        info_str += "\nCPU modello: " + get_cpu_model_name()
         cpu_temp = get_cpu_temperature()
         if cpu_temp:
-            str += "\nCPU Temperatura: " + cpu_temp + " °C"
-        str += "\nCPU usata: " + get_cpu_use() + " %"
+            info_str += "\nCPU Temperatura: " + cpu_temp + " °C"
+        info_str += "\nCPU usata: " + get_cpu_use() + " %"
         ram = get_ram_info()
         if ram:
-            str += "\nRAM totale: " + ram[0] + " KB"
-            str += "\nRAM usata: " + ram[1] + " KB"
-            str += "\nRAM libera: " + ram[2] + " KB"
+            info_str += "\nRAM totale: " + ram[0] + " KB (" + str(convert_KB_to_GB(float(ram[0]), 2)) + " GB)"
+            info_str += "\nRAM usata: " + ram[1] + " KB (" + str(convert_KB_to_GB(float(ram[1]), 2)) + " GB)"
+            info_str += "\nRAM libera: " + ram[2] + " KB (" + str(convert_KB_to_GB(float(ram[2]), 2)) + " GB)"
         disk = get_disk_space()
         if disk:
-            str += "\nSpazio totale: " + disk[0] + "B"
-            str += "\nSpazio usato: " + disk[1] + "B (" + disk[3] + ")"
-            str += "\nSpazio rimanente: " + disk[2] + "B"
+            info_str += "\nSpazio totale: " + disk[0] + "B"
+            info_str += "\nSpazio usato: " + disk[1] + "B (" + disk[3] + ")"
+            info_str += "\nSpazio rimanente: " + disk[2] + "B"
     else:
-        str = "Current server: " + platform_system
-    return str.strip()
+        info_str = "Current server: " + platform_system
+    return info_str.strip()
 
 
 # Return CPU model name
@@ -104,3 +104,7 @@ def get_raspberry_model():
     res = os.popen('cat /sys/firmware/devicetree/base/model')
     res = res.read().strip()
     return res
+
+
+def convert_KB_to_GB(kb, round_index):
+    return round(kb / (1024 * 1024), round_index)
