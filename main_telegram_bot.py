@@ -45,7 +45,7 @@ async def start_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 async def info_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
 	if update.effective_user.username in admin.admins:
-		await context.bot.send_message(chat_id=update.effective_chat.id, text=server_info.get_all_info)
+		await context.bot.send_message(chat_id=update.effective_chat.id, text=server_info.get_all_info())
 
 
 def main():

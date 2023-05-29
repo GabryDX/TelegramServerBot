@@ -3,29 +3,36 @@
 """File con info su Raspberry Pi"""
 
 import os
+import platform
 
 
 def get_all_info():
     str = ""
-    server = get_raspberry_model()
-    if server:
-        str += "Server: " + server
-    os_info = get_os_info()
-    if os_info:
-        str += "\nOS: " + os_info
-    str += "\nCPU modello: " + get_cpu_model_name()
-    cpu_temp = get_cpu_temperature()
-    if cpu_temp:
-        str += "\nCPU Temperatura: " + cpu_temp + " °C"
-    str += "\nCPU usata: " + get_cpu_use() + " %"
-    ram = get_ram_info()
-    str += "\nRAM totale: " + ram[0] + " KB"
-    str += "\nRAM usata: " + ram[1] + " KB"
-    str += "\nRAM libera: " + ram[2] + " KB"
-    disk = get_disk_space()
-    str += "\nSpazio totale: " + disk[0] + "B"
-    str += "\nSpazio usato: " + disk[1] + "B (" + disk[3] + ")"
-    str += "\nSpazio rimanente: " + disk[2] + "B"
+    platform_system = platform.system()
+    if platform_system == "Linux":
+        server = get_raspberry_model()
+        if server:
+            str += "Server: " + server
+        os_info = get_os_info()
+        if os_info:
+            str += "\nOS: " + os_info
+        str += "\nCPU modello: " + get_cpu_model_name()
+        cpu_temp = get_cpu_temperature()
+        if cpu_temp:
+            str += "\nCPU Temperatura: " + cpu_temp + " °C"
+        str += "\nCPU usata: " + get_cpu_use() + " %"
+        ram = get_ram_info()
+        if ram:
+            str += "\nRAM totale: " + ram[0] + " KB"
+            str += "\nRAM usata: " + ram[1] + " KB"
+            str += "\nRAM libera: " + ram[2] + " KB"
+        disk = get_disk_space()
+        if disk:
+            str += "\nSpazio totale: " + disk[0] + "B"
+            str += "\nSpazio usato: " + disk[1] + "B (" + disk[3] + ")"
+            str += "\nSpazio rimanente: " + disk[2] + "B"
+    else:
+        str = "Current server: " + platform_system
     return str.strip()
 
 
