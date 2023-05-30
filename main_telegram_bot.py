@@ -15,9 +15,7 @@ from Objects import admin, utenti
 
 
 bot = None
-read_timeout = 10
-get_updates_read_timeout = 120
-get_updates_connect_timeout = 120
+timeout = 120
 USER_FOLDER = "Users"
 MEDIA_FOLDER = "Media"
 DATABASE_FOLDER = "Database"
@@ -58,9 +56,14 @@ def main():
 	# Telegram Bot Authorization Token
 	builder = Application.builder()
 	builder.token(constants.BOT_TOKEN)
-	builder.read_timeout(read_timeout)
-	builder.get_updates_read_timeout(get_updates_read_timeout)
-	builder.get_updates_connect_timeout(get_updates_connect_timeout)
+	builder.connect_timeout(timeout)
+	builder.pool_timeout(timeout)
+	builder.read_timeout(timeout)
+	builder.write_timeout(timeout)
+	builder.get_updates_connect_timeout(timeout)
+	builder.get_updates_pool_timeout(timeout)
+	builder.get_updates_read_timeout(timeout)
+	builder.get_updates_write_timeout(timeout)
 	application = builder.build()
 	# application = ApplicationBuilder().token(constants.BOT_TOKEN).build()
 
