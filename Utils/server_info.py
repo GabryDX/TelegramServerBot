@@ -16,11 +16,15 @@ def get_all_info():
         os_info = get_os_info()
         if os_info:
             info_str += "\nOS: " + os_info
-        info_str += "\nCPU modello: " + get_cpu_model_name()
-        cpu_temp = get_cpu_temperature()
-        if cpu_temp:
-            info_str += "\nCPU Temperatura: " + cpu_temp + " °C"
-        info_str += "\nCPU usata: " + get_cpu_use() + " %"
+        cpu_info = get_cpu_info()
+        if cpu_info:
+            info_str += "\nCPU:"
+            if "model_name" in cpu_info:
+                info_str += "\n |- modello: " + cpu_info["model_name"]
+            if "temperature" in cpu_info:
+                info_str += "\n |- temperatura: " + cpu_info["temperature"] + " °C"
+            if "usage" in cpu_info:
+                info_str += "\n |- usata: " + cpu_info["usage"] + " %"
         ram = get_ram_info()
         if ram:
             info_str += "\nRAM:"
@@ -49,14 +53,14 @@ def get_cpu_model_name():
 def get_cpu_temperature():
     res = os.popen('vcgencmd measure_temp').readline()
     if "not found" in res:
-        res = os.popen('sensors | grep "Package id" | head -n 1 cut -d"\\"" -f5')
+        res = os.popen('sensors | grep "Package id" | head -n 1 | cut -d" " -f5')
         return res[1:-2]
     else:
         return res.replace("temp=", "").replace("'C\n", "")
 
 
 # Return % of CPU used by user as a character string
-def get_cpu_use():
+def get_cpu_usage():
     # return(str(os.popen("top -n1 | awk '/Cpu\(s\):/ {print $2}'").readline().strip()))
     lista = os.popen("ps aux | awk '{print $3}'")
     cpu = 0.0
@@ -65,6 +69,21 @@ def get_cpu_use():
         if "CPU" not in riga:
             cpu += float(riga)
     return str(round(cpu, 2))
+
+
+# Return CPU info in a dictionary
+def get_cpu_info():
+    cpu_dict = dict()
+    model_name = get_cpu_model_name()
+    temperature = get_cpu_temperature()
+    usage = get_cpu_usage()
+    if model_name:
+        cpu_dict["model_name"] = model_name
+    if temperature:
+        cpu_dict["temperature"] = temperature
+    if usage:
+        cpu_dict["usage"] = usage
+    return cpu_dict
 
 
 # Return RAM information (unit=kb) in a list
