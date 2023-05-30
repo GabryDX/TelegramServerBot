@@ -1,14 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-"""Simple Bot to reply to Telegram messages.
-This is built on the API wrapper, see echobot2.py to see the same example built
-on the telegram.ext bot framework.
-This program is dedicated to the public domain under the CC0 license.
-"""
-import asyncio
-import contextlib
 import logging
-import os
 
 import telegram  # python-telegram-bot
 from telegram.constants import ParseMode
@@ -24,6 +16,8 @@ from Objects import admin, utenti
 
 bot = None
 read_timeout = 10
+get_updates_read_timeout = 120
+get_updates_connect_timeout = 120
 USER_FOLDER = "Users"
 MEDIA_FOLDER = "Media"
 DATABASE_FOLDER = "Database"
@@ -62,20 +56,21 @@ def main():
 	utenti.reload_chat_ids()
 
 	# Telegram Bot Authorization Token
-	# builder = Application.builder()
-	# builder.token(constants.BOT_TOKEN)
-	# # builder.read_timeout(read_timeout)
-	# application = builder.build()
-	application = ApplicationBuilder().token(constants.BOT_TOKEN).build()
+	builder = Application.builder()
+	builder.token(constants.BOT_TOKEN)
+	builder.read_timeout(read_timeout)
+	builder.get_updates_read_timeout(get_updates_read_timeout)
+	builder.get_updates_connect_timeout(get_updates_connect_timeout)
+	application = builder.build()
+	# application = ApplicationBuilder().token(constants.BOT_TOKEN).build()
 
 	bot = ContextTypes.DEFAULT_TYPE.bot
 
 	logger.info("listening for new messages...")
 
-	#application.add_handler(CommandHandler("start", start_callback))
-	#application.add_handler(MessageHandler(filters=filters.ALL, callback=commands.command_factory))
+	# application.add_handler(CommandHandler("start", start_callback))
+	# application.add_handler(MessageHandler(filters=filters.ALL, callback=commands.command_factory))
 	application.add_handler(CommandHandler("info", info_callback))
-
 
 	application.run_polling()
 
