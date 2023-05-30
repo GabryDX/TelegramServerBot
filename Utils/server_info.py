@@ -23,14 +23,16 @@ def get_all_info():
         info_str += "\nCPU usata: " + get_cpu_use() + " %"
         ram = get_ram_info()
         if ram:
-            info_str += "\nRAM totale: " + ram[0] + " KB (" + str(convert_KB_to_GB(float(ram[0]), 2)) + " GB)"
-            info_str += "\nRAM usata: " + ram[1] + " KB (" + str(convert_KB_to_GB(float(ram[1]), 2)) + " GB)"
-            info_str += "\nRAM libera: " + ram[2] + " KB (" + str(convert_KB_to_GB(float(ram[2]), 2)) + " GB)"
+            info_str += "\nRAM:"
+            info_str += "\n |- totale: " + ram[0] + " KB (" + str(convert_KB_to_GB(float(ram[0]), 2)) + " GB)"
+            info_str += "\n |- usata: " + ram[1] + " KB (" + str(convert_KB_to_GB(float(ram[1]), 2)) + " GB)"
+            info_str += "\n |- libera: " + ram[2] + " KB (" + str(convert_KB_to_GB(float(ram[2]), 2)) + " GB)"
         disk = get_disk_space()
         if disk:
-            info_str += "\nSpazio totale: " + disk[0] + "B"
-            info_str += "\nSpazio usato: " + disk[1] + "B (" + disk[3] + ")"
-            info_str += "\nSpazio rimanente: " + disk[2] + "B"
+            info_str += "\nSpazio:"
+            info_str += "\n |- totale: " + disk[0] + "B"
+            info_str += "\n |- usato: " + disk[1] + "B (" + disk[3] + ")"
+            info_str += "\n |- rimanente: " + disk[2] + "B"
     else:
         info_str = "Current server: " + platform_system
     return info_str.strip()
@@ -53,6 +55,18 @@ def get_cpu_temperature():
         return res.replace("temp=", "").replace("'C\n", "")
 
 
+# Return % of CPU used by user as a character string
+def get_cpu_use():
+    # return(str(os.popen("top -n1 | awk '/Cpu\(s\):/ {print $2}'").readline().strip()))
+    lista = os.popen("ps aux | awk '{print $3}'")
+    cpu = 0.0
+    for l in lista:
+        riga = l.strip()
+        if "CPU" not in riga:
+            cpu += float(riga)
+    return str(round(cpu, 2))
+
+
 # Return RAM information (unit=kb) in a list
 # Index 0: total RAM
 # Index 1: used RAM
@@ -65,18 +79,6 @@ def get_ram_info():
         line = p.readline()
         if i == 2:
             return line.split()[1:4]
-
-
-# Return % of CPU used by user as a character string
-def get_cpu_use():
-    # return(str(os.popen("top -n1 | awk '/Cpu\(s\):/ {print $2}'").readline().strip()))
-    lista = os.popen("ps aux | awk '{print $3}'")
-    cpu = 0.0
-    for l in lista:
-        riga = l.strip()
-        if "CPU" not in riga:
-            cpu += float(riga)
-    return str(round(cpu, 2))
 
 
 # Return information about disk space as a list (unit included)
