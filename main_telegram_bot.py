@@ -17,9 +17,6 @@ from Objects import admin, utenti
 
 bot = None
 timeout = 120
-USER_FOLDER = str(pathlib.Path(__file__).parent.resolve()) + "/Users"
-MEDIA_FOLDER = str(pathlib.Path(__file__).parent.resolve()) + "/Media"
-DATABASE_FOLDER = str(pathlib.Path(__file__).parent.resolve()) + "/Database"
 
 
 logging.basicConfig(
@@ -55,9 +52,9 @@ def main():
 	global bot
 
 	# make_dir_if_not_exists(constants.CHAT_DATA_FOLDER)
-	make_dir_if_not_exists(DATABASE_FOLDER)
-	make_dir_if_not_exists(MEDIA_FOLDER)
-	make_dir_if_not_exists(USER_FOLDER)
+	make_dir_if_not_exists(constants.DATABASE_FOLDER)
+	make_dir_if_not_exists(constants.MEDIA_FOLDER)
+	make_dir_if_not_exists(constants.USERS_FOLDER)
 
 	logger.info("\n --- STARTING BOT ---\n")
 

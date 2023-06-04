@@ -4,7 +4,7 @@ from telegram import Update
 from telegram.constants import ParseMode
 from telegram.ext import ContextTypes
 
-from Utils import textfiles
+from Utils import constants, textfiles
 from Objects import utenti
 from Commands.admin_commands import admin_command
 from Commands.user_commands import user_command
@@ -104,7 +104,7 @@ async def command_factory(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
         print(formula)
 
-        file_utente = "Users/" + utenti.get_titolo_clean(messaggio.chat) + ".txt"
+        file_utente = constants.USERS_FOLDER + utenti.get_titolo_clean(messaggio.chat) + ".txt"
         formula += "\n"
         if textfiles.exists(file_utente):
             textfiles.append(formula, file_utente)
@@ -114,7 +114,7 @@ async def command_factory(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 def salva_info(message_id, filename):
     message_id += "\n"
-    filename = "Media/" + filename
+    filename = constants.MEDIA_FOLDER + filename
     if textfiles.exists(filename):
         textfiles.append(message_id, filename)
     else:

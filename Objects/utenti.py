@@ -1,11 +1,9 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from Utils import textfiles
-import pathlib
+from Utils import constants, textfiles
 import re
 
-CHATIDS = str(pathlib.Path(__file__).parent.resolve()) + "/../Database/ChatIDs.txt"
 chatIDs = []
 chatTitles = []
 
@@ -91,8 +89,8 @@ def get_titolo_clean(chat):
 
 def reload_chat_ids():
 	"""Ricarico informazioni salvate su utenti e chat"""
-	if textfiles.exists(CHATIDS):
-		lista = textfiles.readLines(CHATIDS)
+	if textfiles.exists(constants.CHATIDS_FILE):
+		lista = textfiles.readLines(constants.CHATIDS_FILE)
 		del chatIDs[:]
 		del chatTitles[:]
 		for s in lista:
@@ -107,7 +105,7 @@ def reload_chat_ids():
 					titolo = titolo.replace("___", "")
 					chatTitles.extend([titolo])
 	else:
-		textfiles.write("", CHATIDS)
+		textfiles.write("", constants.CHATIDS_FILE)
 
 	print("------------------------------")
 	print("CHAT ID UPDATED")
@@ -152,7 +150,7 @@ def update_chat_ids(messaggio):
 				print("NUOVO NOME TROVATO --> AGGIORNAMENTO NOME")
 				chatTitles[indice] = nome
 				vecchia_riga = utente_id_str + "___" + vecchio_nome
-				textfiles.updateLine(vecchia_riga, riga_u, CHATIDS)
+				textfiles.updateLine(vecchia_riga, riga_u, constants.CHATIDS_FILE)
 				print("L'utente [" + utente_id_str + "] " + vecchio_nome + " è diventato " + nome)
 				# i = 0
 				# found = False
@@ -165,7 +163,7 @@ def update_chat_ids(messaggio):
 			print("NUOVO UTENTE TROVATO --> AGGIUNTA UTENTE")
 			chatIDs.extend([utente_id])
 			chatTitles.extend([nome])
-			textfiles.append(riga_u + "\n", CHATIDS)
+			textfiles.append(riga_u + "\n", constants.CHATIDS_FILE)
 			print("Nuovo utente [" + utente_id_str + "] " + nome)
 
 		if str(chat_id).startswith("-"):
@@ -176,7 +174,7 @@ def update_chat_ids(messaggio):
 					print("NUOVO TITOLO CHAT TROVATO --> AGGIORNAMENTO TITOLO")
 					chatTitles[indice] = titolo
 					vecchia_riga = chat_id_str + "___" + vecchio_nome
-					textfiles.updateLine(vecchia_riga, riga_c, CHATIDS)
+					textfiles.updateLine(vecchia_riga, riga_c, constants.CHATIDS_FILE)
 					print("La chat [" + chat_id_str + "] " + vecchio_nome + " è diventata " + titolo)
 					# i = 0
 					# found = False
@@ -189,13 +187,13 @@ def update_chat_ids(messaggio):
 				print("NUOVA CHAT TROVATA --> AGGIUNTA CHAT")
 				chatIDs.extend([chat_id])
 				chatTitles.extend([titolo])
-				textfiles.append(riga_c, CHATIDS)
+				textfiles.append(riga_c, constants.CHATIDS_FILE)
 				print("Nuova chat [" + chat_id_str + "] " + titolo)
 
 
 def get_chat_id_str():
 	"""ritorna una stringa con le chat concatenate"""
-	lista = textfiles.readLines(CHATIDS)
+	lista = textfiles.readLines(constants.CHATIDS_FILE)
 	utenti = ""
 	for s in lista:
 		utenti += s + "\n"
@@ -205,7 +203,7 @@ def get_chat_id_str():
 def get_chat_id_from_username(username):
 	"""ritorna il chat id dell'utente con username"""
 	username = username.replace("@", "")
-	lista = textfiles.readLines(CHATIDS)
+	lista = textfiles.readLines(constants.CHATIDS_FILE)
 	utente = ""
 	for s in lista:
 		if username in s:

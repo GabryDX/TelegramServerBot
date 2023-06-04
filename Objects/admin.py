@@ -3,10 +3,8 @@
 """Comandi per gli admin
 """
 
-from Utils import textfiles
-import pathlib
+from Utils import constants, textfiles
 
-ADMIN = str(pathlib.Path(__file__).parent.resolve()) + "/../Database/Admin.txt"
 admins = []
 
 
@@ -35,7 +33,7 @@ def add_admin(messaggio):
     rimuovi = "/addadmin @"
     if testo.startswith(rimuovi):
         adm = testo.replace(rimuovi, "")
-        textfiles.append(adm + "\n", ADMIN)
+        textfiles.append(adm + "\n", constants.ADMIN_FILE)
         admins.extend([adm])
         return "L'admin @" + adm + " è stato aggiunto."
     else:
@@ -60,13 +58,13 @@ def is_admin(user):
 
 
 def reload_admin():
-    if textfiles.exists(ADMIN):
-        lista = textfiles.readLines(ADMIN)
+    if textfiles.exists(constants.ADMIN_FILE):
+        lista = textfiles.readLines(constants.ADMIN_FILE)
         del admins[:]
         for s in lista:
             admins.extend([s])
     else:
-        textfiles.write("", ADMIN)
+        textfiles.write("", constants.ADMIN_FILE)
 
 
 def is_digit(n):

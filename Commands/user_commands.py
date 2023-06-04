@@ -133,7 +133,7 @@ def get_main_menu():
 
 
 async def reload_database(messaggio):
-	admin.realod_admin()
+	admin.reload_admin()
 	utenti.reload_chat_ids()
 	await messaggio.reply_text("<b>Database ricaricato</b>", reply_markup=default_menu(messaggio),
 						 parse_mode=ParseMode.HTML)
