@@ -37,6 +37,9 @@ def get_all_info():
             info_str += "\n |- totale: " + disk[0] + "B"
             info_str += "\n |- usato: " + disk[1] + "B (" + disk[3] + ")"
             info_str += "\n |- rimanente: " + disk[2] + "B"
+        adapters = get_adapters()
+        if adapters:
+            info_str += adapters
     else:
         info_str = "Current server: " + platform_system
     return info_str.strip()
@@ -129,3 +132,25 @@ def get_raspberry_model():
 
 def convert_KB_to_GB(kb, round_index):
     return round(kb / (1024 * 1024), round_index)
+
+
+def get_adapters():
+    res = os.popen('sensors')
+    res = str(res).replace("        ", "\t")
+    sensors = res.split("\n\n")
+    new_res = "Adapters"
+    for sensor in sensors:
+        details = sensor.split("\n")
+        if "Adapter:" not in details[0]:
+            details[1] += " - " + details[0]
+            details.pop(0)
+        name_adapter = details[0].replace("Adapter:", "", 1).strip()
+        new_res += "\n |- " + name_adapter
+        for detail in details[1:]:
+            new_detail = detail.replace("  ", " ")
+            if new_detail.startswith(" ") or new_detail.startswith("("):
+                pass
+            else:
+                id_parenthesis = new_detail.index("(")
+                new_res += "\n |-|- " + new_detail.replace("\t", " ")[:id_parenthesis].strip()
+    return new_res
