@@ -47,7 +47,7 @@ async def info_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 
 async def error_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
-	print(f'Update {update} caused error {context.error}')
+	logger.error(f'Update {update} caused error {context.error}')
 
 
 def main():
@@ -59,7 +59,7 @@ def main():
 	make_dir_if_not_exists(MEDIA_FOLDER)
 	make_dir_if_not_exists(USER_FOLDER)
 
-	print("\n --- STARTING BOT ---\n")
+	logger.info("\n --- STARTING BOT ---\n")
 
 	admin.reload_admin()
 	utenti.reload_chat_ids()
@@ -92,7 +92,7 @@ def main():
 	# Errors
 	application.add_error_handler(error_callback)
 
-	print("Polling...")
+	logger.info("Polling...")
 	application.run_polling()
 
 
