@@ -5,7 +5,7 @@ from Utils import textfiles
 import pathlib
 import re
 
-CHATIDS = str(pathlib.Path(__file__).parent.resolve()) + "/Database/ChatIDs.txt"
+CHATIDS = str(pathlib.Path(__file__).parent.resolve()) + "/../Database/ChatIDs.txt"
 chatIDs = []
 chatTitles = []
 

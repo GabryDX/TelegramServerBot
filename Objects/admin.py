@@ -6,7 +6,7 @@
 from Utils import textfiles
 import pathlib
 
-ADMIN = str(pathlib.Path(__file__).parent.resolve()) + "/Database/Admin.txt"
+ADMIN = str(pathlib.Path(__file__).parent.resolve()) + "/../Database/Admin.txt"
 admins = []
 
 

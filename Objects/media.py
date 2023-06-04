@@ -5,7 +5,7 @@
 from Utils import textfiles
 import pathlib
 
-BASE_MEDIA_FOLDER = str(pathlib.Path(__file__).parent.resolve()) + "/Media/"
+BASE_MEDIA_FOLDER = str(pathlib.Path(__file__).parent.resolve()) + "/../Media/"
 AUDIOID = BASE_MEDIA_FOLDER + "Audio.txt"
 DOCUMENTID = BASE_MEDIA_FOLDER + "Document.txt"
 PHOTOID = BASE_MEDIA_FOLDER + "Photo.txt"
