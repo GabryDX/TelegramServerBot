@@ -59,7 +59,7 @@ async def admin_command(messaggio, bot):
     return comando_admin
 
 
-async def get_database_info():
+def get_database_info():
     database = "*DATABASE:*\n\n"
     database += "--------------------\n"
     database += "*ADMIN:* " + str(len(admin.admins)) + "\n"
@@ -82,7 +82,7 @@ async def get_propic(messaggio, bot):
     """Invia al chiamante tutte le propic di un utente"""
     testo = messaggio.text
     rimuovi = "/getpropic "
-    userid = testo.replace(rimuovi, "")
+    userid = testo.replace(rimuovi, "", 1)
     if admin.is_digit(userid):
         if userid.startswith("-"):
             chat = bot.get_chat(userid)
@@ -117,7 +117,7 @@ async def send_all(messaggio, bot):
     """Invia un messaggio a tutti gli utenti che hanno usato il bot"""
     testo = messaggio.text
     rimuovi = "/sendall"
-    mex = testo.replace(rimuovi, "").strip()
+    mex = testo.replace(rimuovi, "", 1).strip()
     if len(mex) > 0:
         lista_utenti = utenti.chatIDs
         for uid in lista_utenti:
@@ -144,7 +144,7 @@ async def send_message(messaggio, bot):
 
 
 async def execute_server_command(messaggio):
-    command = messaggio.text.replace("/exec", "").strip()
+    command = messaggio.text.replace("/exec", "", 1).strip()
     if command:
         res = os.popen(command)
         res = res.read().strip()

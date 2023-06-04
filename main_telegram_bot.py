@@ -24,28 +24,6 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 
-async def init_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
-	for administrator in admin.get_admins().split("\n"):
-		if administrator:
-			chat_id = utenti.get_chat_id_from_username(administrator)
-			if chat_id:
-				await context.bot.send_message(chat_id=chat_id, text="*BOT ACCESO*", parse_mode=ParseMode.MARKDOWN)
-
-
-async def start_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
-	if update.effective_user.username in admin.admins:
-		await update.message.reply_text("Ciao, sono acceso.")
-
-
-async def info_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
-	if update.effective_user.username in admin.admins:
-		await context.bot.send_message(chat_id=update.effective_chat.id, text=server_info.get_all_info())
-
-
-async def error_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
-	logger.error(f'Update {update} caused error {context.error}')
-
-
 def main():
 	"""Run the bot."""
 	logger.info("\n --- STARTING BOT ---\n")
@@ -79,14 +57,14 @@ def main():
 	logger.info("listening for new messages...")
 
 	# Commands
-	application.add_handler(CommandHandler("start", start_callback))
-	application.add_handler(CommandHandler("info", info_callback))
+	application.add_handler(CommandHandler("start", commands.start_callback))
+	application.add_handler(CommandHandler("info", commands.info_callback))
 
 	# Messages
 	application.add_handler(MessageHandler(filters=filters.ALL, callback=commands.command_factory))
 
 	# Errors
-	application.add_error_handler(error_callback)
+	application.add_error_handler(commands.error_callback)
 
 	logger.info("Polling...")
 	application.run_polling()
