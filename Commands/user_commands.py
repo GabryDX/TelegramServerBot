@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+import logging
 from random import randrange
 
 from telegram import ReplyKeyboardMarkup
@@ -12,6 +13,7 @@ from Utils.server_info import get_all_info
 
 MARKDOWN = ParseMode.MARKDOWN
 MARKDOWN_V2 = ParseMode.MARKDOWN_V2
+logger = logging.getLogger(__name__)
 
 # default_menu_keyboard = [['Azioni'], ['Dati correnti', 'Valori migliori'], ['Test', 'Info']]
 # default_menu_markup = ReplyKeyboardMarkup(default_menu_keyboard, one_time_keyboard=True, resize_keyboard=True)
@@ -28,8 +30,7 @@ def default_menu(messaggio):
 
 
 async def user_command(messaggio):
-	# global sub_menu
-
+	logger.info("USER COMMAND - START")
 	testo = messaggio.text.lower()
 	if testo == "/start" or testo == "menu":
 		# text = "INIZIO"
@@ -65,6 +66,7 @@ async def user_command(messaggio):
 									 reply_markup=default_menu(messaggio))
 				# messaggio.reply_text(str(e), reply_markup=default_menu_markup)
 	print(sub_menu)
+	logger.info("USER COMMAND - END")
 
 
 # elif testo.startswith("/tastiera"):

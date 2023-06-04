@@ -1,15 +1,16 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+import logging
 import os
 from time import sleep
 
 from telegram.constants import ParseMode
 
 from Objects import admin, utenti, media
-from Utils import textfiles
 
 MARKDOWN = ParseMode.MARKDOWN
+logger = logging.getLogger(__name__)
 
 comandi_admin = ["/admin", "/addadmin", "/getadmins",
                  "/getchatids", "/getdatabaseinfo",
@@ -18,6 +19,7 @@ comandi_admin = ["/admin", "/addadmin", "/getadmins",
 
 
 async def admin_command(messaggio, bot):
+    logger.info("ADMIN COMMAND - START")
     comando_admin = False
     testo = messaggio.text
     contain = False
@@ -53,6 +55,7 @@ async def admin_command(messaggio, bot):
                 comando_admin = False
         else:
             await messaggio.reply_text("*Devi essere un amministratore per usare questo comando*", parse_mode=MARKDOWN)
+    logger.info("ADMIN COMMAND - END")
     return comando_admin
 
 

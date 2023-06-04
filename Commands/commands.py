@@ -1,5 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+
+import logging
+
 from telegram import Update
 from telegram.constants import ParseMode
 from telegram.ext import ContextTypes
@@ -9,27 +12,15 @@ from Objects import utenti
 from Commands.admin_commands import admin_command
 from Commands.user_commands import user_command
 
-update_id = None
-
-AUDIOID = "Audio.txt"
-DOCUMENTID = "Document.txt"
-PHOTOID = "Photo.txt"
-STICKERID = "Sticker.txt"
-VIDEOID = "Video.txt"
-VIDEONOTEID = "VideoNote.txt"
-VOICEID = "Voice.txt"
-CONTACTID = "Contact.txt"
-LOCATIONID = "Location.txt"
-VENUEID = "Venue.txt"
 
 MARKDOWN = ParseMode.MARKDOWN
+logger = logging.getLogger(__name__)
 
 
 async def command_factory(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    """Echo the message the user sent."""
-    print(update)
+    """Manages all the messages if they match a command"""
+    logger.info(update)
     messaggio = update.message
-    print(messaggio)
 
     # controllo se nuovo utente e lo aggiungo nel database
     utenti.update_chat_ids(messaggio)

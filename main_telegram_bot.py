@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 import logging
-import pathlib
 
 import telegram  # python-telegram-bot
 from telegram.constants import ParseMode
@@ -49,14 +48,14 @@ async def error_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 def main():
 	"""Run the bot."""
+	logger.info("\n --- STARTING BOT ---\n")
+
 	global bot
 
 	# make_dir_if_not_exists(constants.CHAT_DATA_FOLDER)
 	make_dir_if_not_exists(constants.DATABASE_FOLDER)
 	make_dir_if_not_exists(constants.MEDIA_FOLDER)
 	make_dir_if_not_exists(constants.USERS_FOLDER)
-
-	logger.info("\n --- STARTING BOT ---\n")
 
 	admin.reload_admin()
 	utenti.reload_chat_ids()
