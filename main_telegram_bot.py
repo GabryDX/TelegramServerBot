@@ -27,7 +27,7 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 
-async def start_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
+async def init_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
 	for administrator in admin.get_admins().split("\n"):
 		if administrator:
 			chat_id = utenti.get_chat_id_from_username(administrator)
@@ -35,9 +35,18 @@ async def start_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
 				await context.bot.send_message(chat_id=chat_id, text="*BOT ACCESO*", parse_mode=ParseMode.MARKDOWN)
 
 
+async def start_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
+	if update.effective_user.username in admin.admins:
+		await update.message.reply_text("Ciao, sono acceso.")
+
+
 async def info_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
 	if update.effective_user.username in admin.admins:
 		await context.bot.send_message(chat_id=update.effective_chat.id, text=server_info.get_all_info())
+
+
+async def error_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
+	print(f'Update {update} caused error {context.error}')
 
 
 def main():
@@ -48,7 +57,7 @@ def main():
 	make_dir_if_not_exists(DATABASE_FOLDER)
 	make_dir_if_not_exists(USER_FOLDER)
 
-	print("\n --- AVVIO DEL BOT ---\n")
+	print("\n --- STARTING BOT ---\n")
 
 	admin.reload_admin()
 	utenti.reload_chat_ids()
@@ -71,10 +80,17 @@ def main():
 
 	logger.info("listening for new messages...")
 
-	# application.add_handler(CommandHandler("start", start_callback))
-	# application.add_handler(MessageHandler(filters=filters.ALL, callback=commands.command_factory))
+	# Commands
+	application.add_handler(CommandHandler("start", start_callback))
 	application.add_handler(CommandHandler("info", info_callback))
 
+	# Messages
+	application.add_handler(MessageHandler(filters=filters.ALL, callback=commands.command_factory))
+
+	# Errors
+	application.add_error_handler(error_callback)
+
+	print("Polling...")
 	application.run_polling()
 
 
