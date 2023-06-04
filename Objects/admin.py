@@ -4,8 +4,9 @@
 """
 
 from Utils import textfiles
+import pathlib
 
-ADMIN = "Database/Admin.txt"
+ADMIN = str(pathlib.Path(__file__).parent.resolve()) + "/Database/Admin.txt"
 admins = []
 
 

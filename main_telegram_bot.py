@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 import logging
+import pathlib
 
 import telegram  # python-telegram-bot
 from telegram.constants import ParseMode
@@ -16,9 +17,9 @@ from Objects import admin, utenti
 
 bot = None
 timeout = 120
-USER_FOLDER = "Users"
-MEDIA_FOLDER = "Media"
-DATABASE_FOLDER = "Database"
+USER_FOLDER = str(pathlib.Path(__file__).parent.resolve()) + "/Users"
+MEDIA_FOLDER = str(pathlib.Path(__file__).parent.resolve()) + "/Media"
+DATABASE_FOLDER = str(pathlib.Path(__file__).parent.resolve()) + "/Database"
 
 
 logging.basicConfig(
@@ -53,8 +54,9 @@ def main():
 	"""Run the bot."""
 	global bot
 
-	make_dir_if_not_exists(constants.CHAT_DATA_FOLDER)
+	# make_dir_if_not_exists(constants.CHAT_DATA_FOLDER)
 	make_dir_if_not_exists(DATABASE_FOLDER)
+	make_dir_if_not_exists(MEDIA_FOLDER)
 	make_dir_if_not_exists(USER_FOLDER)
 
 	print("\n --- STARTING BOT ---\n")

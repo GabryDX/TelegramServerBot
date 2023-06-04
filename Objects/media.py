@@ -3,17 +3,19 @@
 
 
 from Utils import textfiles
+import pathlib
 
-AUDIOID = "Media/Audio.txt"
-DOCUMENTID = "Media/Document.txt"
-PHOTOID = "Media/Photo.txt"
-STICKERID = "Media/Sticker.txt"
-VIDEOID = "Media/Video.txt"
-VIDEONOTEID = "Media/VideoNote.txt"
-VOICEID = "Media/Voice.txt"
-CONTACTID = "Media/Contact.txt"
-LOCATIONID = "Media/Location.txt"
-VENUEID = "Media/Venue.txt"
+BASE_MEDIA_FOLDER = str(pathlib.Path(__file__).parent.resolve()) + "/Media/"
+AUDIOID = BASE_MEDIA_FOLDER + "Audio.txt"
+DOCUMENTID = BASE_MEDIA_FOLDER + "Document.txt"
+PHOTOID = BASE_MEDIA_FOLDER + "Photo.txt"
+STICKERID = BASE_MEDIA_FOLDER + "Sticker.txt"
+VIDEOID = BASE_MEDIA_FOLDER + "Video.txt"
+VIDEONOTEID = BASE_MEDIA_FOLDER + "VideoNote.txt"
+VOICEID = BASE_MEDIA_FOLDER + "Voice.txt"
+CONTACTID = BASE_MEDIA_FOLDER + "Contact.txt"
+LOCATIONID = BASE_MEDIA_FOLDER + "Location.txt"
+VENUEID = BASE_MEDIA_FOLDER + "Venue.txt"
 
 
 def get_contact(contact):

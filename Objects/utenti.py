@@ -1,9 +1,11 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+
 from Utils import textfiles
+import pathlib
 import re
 
-CHATIDS = "Database/ChatIDs.txt"
+CHATIDS = str(pathlib.Path(__file__).parent.resolve()) + "/Database/ChatIDs.txt"
 chatIDs = []
 chatTitles = []
 
