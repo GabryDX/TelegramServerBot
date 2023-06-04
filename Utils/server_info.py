@@ -152,5 +152,7 @@ def get_adapters():
                 pass
             else:
                 id_parenthesis = new_detail.index("(")
-                new_res += "\n |-|- " + new_detail.replace("\t", " ")[:id_parenthesis].strip()
+                if id_parenthesis > -1:
+                    new_detail = new_detail[:id_parenthesis]
+                new_res += "\n |-|- " + new_detail.replace("\t", " ").strip()
     return new_res
