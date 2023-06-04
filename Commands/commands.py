@@ -12,7 +12,6 @@ from Objects import utenti, admin
 from Commands.admin_commands import admin_command
 from Commands.user_commands import user_command
 
-MARKDOWN = ParseMode.MARKDOWN
 logger = logging.getLogger(__name__)
 
 

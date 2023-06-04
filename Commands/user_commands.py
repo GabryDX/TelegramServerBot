@@ -11,8 +11,6 @@ from Objects import admin, utenti
 from Objects.media import get_document_list, get_photo_list
 from Utils.server_info import get_all_info
 
-MARKDOWN = ParseMode.MARKDOWN
-MARKDOWN_V2 = ParseMode.MARKDOWN_V2
 logger = logging.getLogger(__name__)
 
 # default_menu_keyboard = [['Azioni'], ['Dati correnti', 'Valori migliori'], ['Test', 'Info']]
@@ -35,17 +33,18 @@ async def user_command(messaggio):
 	if testo == "/start" or testo == "menu":
 		# text = "INIZIO"
 		text = get_main_menu()
-		await messaggio.reply_text(text, reply_markup=default_menu(messaggio), parse_mode=MARKDOWN_V2)
+		await messaggio.reply_text(text, reply_markup=default_menu(messaggio), parse_mode=ParseMode.MARKDOWN_V2)
 	elif testo == "test":
 		await messaggio.reply_text("TEST", reply_markup=default_menu(messaggio))
 	elif testo.startswith("/comandi"):
-		comandi = "*COMANDI UTENTE:*\n\n*/start* Messaggio iniziale di benvenuto\n"
-		comandi += "*/comandi* Lista dei comandi utente\n"
-		comandi += "/*random_pic* Invia un'immagine presa causalmente dal database\n"
-		comandi += "/*raspberry* Informazioni sul server raspberry"
-		await messaggio.reply_text(comandi, parse_mode=MARKDOWN)
+		comandi = "<b>COMANDI UTENTE:</b>\n\n*/start* Messaggio iniziale di benvenuto\n"
+		comandi += "<b>/comandi</b> Lista dei comandi utente\n"
+		comandi += "<b>/random_pic</b> Invia un'immagine presa causalmente dal database\n"
+		comandi += "<b>/raspberry</b> Informazioni sul server raspberry"
+		await messaggio.reply_text(comandi, parse_mode=ParseMode.HTML)
 	elif testo == "torna al menu":
-		await messaggio.reply_text(get_main_menu(), reply_markup=default_menu(messaggio), parse_mode=MARKDOWN_V2)
+		await messaggio.reply_text(get_main_menu(), reply_markup=default_menu(messaggio),
+								   parse_mode=ParseMode.MARKDOWN_V2)
 		for key in sub_menu:
 			if isinstance(sub_menu[key], str):
 				sub_menu[key] = ""
