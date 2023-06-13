@@ -35,7 +35,7 @@ def load_customs() -> dict:
     if textfiles.exists(CUSTOM_CONSTANTS_FILE):
         lista = textfiles.readLines(CUSTOM_CONSTANTS_FILE)
         for line in lista:
-            (key, val) = line.split(":")
+            (key, val) = line.split(":", maxsplit=1)
             custom_dict[key] = val.strip()
     else:
         textfiles.write("BOT_TOKEN:\nPLEX_MEDIA_FOLDER:\nPLEX_SCANNER_FOLDER:", CUSTOM_CONSTANTS_FILE)
