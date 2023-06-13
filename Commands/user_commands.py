@@ -54,7 +54,7 @@ async def user_command(messaggio):
 				sub_menu[key] = False
 	elif testo == "libreria plex":
 		res = "<code>" + get_plex_library() + "</code>"
-		messaggio.reply_text(res, reply_markup=default_menu(messaggio), parse_mode=ParseMode.HTML)
+		await messaggio.reply_text(res, reply_markup=default_menu(messaggio), parse_mode=ParseMode.HTML)
 	if admin.is_admin(messaggio.from_user.username):
 		if testo == "info":
 			menu_keyboard = [['Server'], ["Ricarica Database"], ['Torna al menu']]
@@ -72,7 +72,7 @@ async def user_command(messaggio):
 			res = update_plex_library()
 			if not res:
 				res = "Libreria Plex aggiornata."
-			messaggio.reply_text(res, reply_markup=default_menu(messaggio), parse_mode=ParseMode.HTML)
+			await messaggio.reply_text(res, reply_markup=default_menu(messaggio), parse_mode=ParseMode.HTML)
 	print(sub_menu)
 	logger.info("USER COMMAND - END")
 

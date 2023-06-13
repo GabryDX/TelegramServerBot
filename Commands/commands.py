@@ -153,5 +153,6 @@ async def info_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 async def error_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
     logger.error(f'Update {update} caused error {context.error}')
-    await context.bot.send_message(chat_id=update.effective_chat.id, text=f'Update {update} caused error {context.error}')
+    await context.bot.send_message(chat_id=update.effective_chat.id,
+                                   text=f'Update {update} caused error {context.error}')
     
