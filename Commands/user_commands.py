@@ -10,7 +10,7 @@ from telegram.constants import ParseMode
 from Commands.plex_commands import get_plex_library, update_plex_library
 from Objects import admin, utenti
 from Objects.media import get_document_list, get_photo_list
-from Utils.server_info import get_all_info
+from Utils.server_info import get_all_info, run_command
 
 logger = logging.getLogger(__name__)
 
@@ -68,6 +68,10 @@ async def user_command(messaggio):
 			except Exception as e:
 				await messaggio.reply_text("Non mi trovo su server Linux in questo momento. " + str(e),
 										   reply_markup=default_menu(messaggio))
+		elif testo == "spegni":
+			res = "Comando di spegnimento inviato al server."
+			await messaggio.reply_text(res, reply_markup=default_menu(messaggio))
+			run_command("sudo shutdown")
 		elif testo == "aggiorna plex":
 			res = update_plex_library()
 			if not res:
