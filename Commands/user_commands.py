@@ -7,6 +7,7 @@ from random import randrange
 from telegram import ReplyKeyboardMarkup
 from telegram.constants import ParseMode
 
+from Commands.plex_commands import get_plex_library, update_plex_library
 from Objects import admin, utenti
 from Objects.media import get_document_list, get_photo_list
 from Utils.server_info import get_all_info
@@ -19,10 +20,11 @@ sub_menu = {"scegli_titolo": False, "compra_vendi": False, "compra": False, "ven
 
 
 def default_menu(messaggio):
-	default_menu_keyboard = [['Menu', 'Azioni'], ['Dati correnti', 'Valori migliori']]
+	default_menu_keyboard = [['Menu']]
 	if admin.is_admin(messaggio.from_user.username):
-		default_menu_keyboard += [['Info']]
-
+		default_menu_keyboard += [['Libreria Plex', 'Aggiorna Plex'], ['Info'], ['Spegni']]
+	else:
+		default_menu_keyboard += [['Libreria Plex']]
 	default_menu_markup = ReplyKeyboardMarkup(default_menu_keyboard, one_time_keyboard=True, resize_keyboard=True)
 	return default_menu_markup
 
@@ -41,7 +43,7 @@ async def user_command(messaggio):
 		comandi += "<b>/comandi</b> Lista dei comandi utente\n"
 		comandi += "<b>/random_pic</b> Invia un'immagine presa causalmente dal database\n"
 		comandi += "<b>/raspberry</b> Informazioni sul server raspberry"
-		await messaggio.reply_text(comandi, parse_mode=ParseMode.HTML)
+		await messaggio.reply_text(comandi, reply_markup=default_menu(messaggio), parse_mode=ParseMode.HTML)
 	elif testo == "torna al menu":
 		await messaggio.reply_text(get_main_menu(), reply_markup=default_menu(messaggio),
 								   parse_mode=ParseMode.MARKDOWN_V2)
@@ -50,6 +52,9 @@ async def user_command(messaggio):
 				sub_menu[key] = ""
 			else:
 				sub_menu[key] = False
+	elif testo == "libreria plex":
+		res = "<code>" + get_plex_library() + "</code>"
+		messaggio.reply_text(res, parse_mode=ParseMode.HTML)
 	if admin.is_admin(messaggio.from_user.username):
 		if testo == "info":
 			menu_keyboard = [['Server'], ["Ricarica Database"], ['Torna al menu']]
@@ -61,9 +66,13 @@ async def user_command(messaggio):
 			try:
 				await messaggio.reply_text(get_all_info(), reply_markup=default_menu(messaggio))
 			except Exception as e:
-				await messaggio.reply_text("Non mi trovo su server Linux in questo momento",
-									 reply_markup=default_menu(messaggio))
-				# messaggio.reply_text(str(e), reply_markup=default_menu_markup)
+				await messaggio.reply_text("Non mi trovo su server Linux in questo momento. " + str(e),
+										   reply_markup=default_menu(messaggio))
+		elif testo == "aggiorna plex":
+			res = update_plex_library()
+			if not res:
+				"Libreria Plex aggiornata."
+			messaggio.reply_text(res, reply_markup=default_menu(messaggio), parse_mode=ParseMode.HTML)
 	print(sub_menu)
 	logger.info("USER COMMAND - END")
 

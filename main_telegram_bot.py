@@ -40,7 +40,7 @@ def main():
 
 	# Telegram Bot Authorization Token
 	builder = Application.builder()
-	builder.token(constants.BOT_TOKEN)
+	builder.token(constants.CUSTOM.BOT_TOKEN)
 	builder.connect_timeout(timeout)
 	builder.pool_timeout(timeout)
 	builder.read_timeout(timeout)

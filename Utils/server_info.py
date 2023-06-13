@@ -156,3 +156,10 @@ def get_adapters():
                     new_detail = new_detail[:id_parenthesis]
                 new_res += "\n |-|- " + new_detail.strip()
     return new_res
+
+
+def run_command(command: str) -> str:
+    try:
+        return os.popen(command).read().strip()
+    except Exception as e:
+        return str(e)
