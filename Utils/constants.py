@@ -2,7 +2,7 @@ import pathlib
 from typing import Final
 
 from Utils import textfiles
-from Utils.Custom import Custom
+from Utils.CustomConstants import CustomConstants
 
 
 BASE_PROJECT_FOLDER: Final[str] = str(pathlib.Path(__file__).parent.resolve()) + "/../"
@@ -35,11 +35,12 @@ def load_customs() -> dict:
     if textfiles.exists(CUSTOM_CONSTANTS_FILE):
         lista = textfiles.readLines(CUSTOM_CONSTANTS_FILE)
         for line in lista:
-            (key, val) = line.split()
+            (key, val) = line.split(": ")
             custom_dict[key] = val
     else:
         textfiles.write("BOT_TOKEN:\nPLEX_MEDIA_FOLDER:\nPLEX_SCANNER_FOLDER:", CUSTOM_CONSTANTS_FILE)
     return custom_dict
 
 
-CUSTOM = Custom(load_customs())
+CustomConstants().load_data(dictionary=load_customs())
+CUSTOM = CustomConstants()

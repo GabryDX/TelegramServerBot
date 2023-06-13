@@ -16,7 +16,7 @@ logger = logging.getLogger(__name__)
 
 # default_menu_keyboard = [['Azioni'], ['Dati correnti', 'Valori migliori'], ['Test', 'Info']]
 # default_menu_markup = ReplyKeyboardMarkup(default_menu_keyboard, one_time_keyboard=True, resize_keyboard=True)
-sub_menu = {"scegli_titolo": False, "compra_vendi": False, "compra": False, "vendi": False, "soglia": False, "soglia_value": ""}
+sub_menu = {"custom_sub_menu": False}
 
 
 def default_menu(messaggio):
@@ -39,11 +39,11 @@ async def user_command(messaggio):
 	elif testo == "test":
 		await messaggio.reply_text("TEST", reply_markup=default_menu(messaggio))
 	elif testo.startswith("/comandi"):
-		comandi = "<b>COMANDI UTENTE:</b>\n\n*/start* Messaggio iniziale di benvenuto\n"
+		comandi = "<b>COMANDI UTENTE:\n\n/start</b> Messaggio iniziale di benvenuto\n"
 		comandi += "<b>/comandi</b> Lista dei comandi utente\n"
 		comandi += "<b>/random_pic</b> Invia un'immagine presa causalmente dal database\n"
 		comandi += "<b>/raspberry</b> Informazioni sul server raspberry"
-		await messaggio.reply_text(comandi, reply_markup=default_menu(messaggio), parse_mode=ParseMode.HTML)
+		await messaggio.reply_text(comandi, parse_mode=ParseMode.HTML)
 	elif testo == "torna al menu":
 		await messaggio.reply_text(get_main_menu(), reply_markup=default_menu(messaggio),
 								   parse_mode=ParseMode.MARKDOWN_V2)
@@ -54,7 +54,7 @@ async def user_command(messaggio):
 				sub_menu[key] = False
 	elif testo == "libreria plex":
 		res = "<code>" + get_plex_library() + "</code>"
-		messaggio.reply_text(res, parse_mode=ParseMode.HTML)
+		messaggio.reply_text(res, reply_markup=default_menu(messaggio), parse_mode=ParseMode.HTML)
 	if admin.is_admin(messaggio.from_user.username):
 		if testo == "info":
 			menu_keyboard = [['Server'], ["Ricarica Database"], ['Torna al menu']]
@@ -71,7 +71,7 @@ async def user_command(messaggio):
 		elif testo == "aggiorna plex":
 			res = update_plex_library()
 			if not res:
-				"Libreria Plex aggiornata."
+				res = "Libreria Plex aggiornata."
 			messaggio.reply_text(res, reply_markup=default_menu(messaggio), parse_mode=ParseMode.HTML)
 	print(sub_menu)
 	logger.info("USER COMMAND - END")
