@@ -4,7 +4,7 @@ from Utils.server_info import run_command
 
 def get_plex_library():
     command = 'find "' + constants.CUSTOM.PLEX_MEDIA_FOLDER \
-              + '" | sed -e "s/[^-][^\\/]*\\// |/g" -e "s/|\\([^ ]\\)/|-\1/"'
+              + '" | sed -e "s/[^-][^\\/]*\\// |/g" -e "s/|\\([^ ]\\)/|-\\1/"'
     response = run_command(command)
     splitted = response.split("\n")
     init = splitted[0]
@@ -17,6 +17,6 @@ def get_plex_library():
 
 
 def update_plex_library():
-    command = '"' + constants.CUSTOM.PLEX_SCANNER_FOLDER + 'Plex Media Scanner" --refresh --force'
+    command = '"' + constants.CUSTOM.PLEX_SCANNER_FOLDER + 'Plex Media Scanner" --scan'
     response = run_command(command)
     return response
