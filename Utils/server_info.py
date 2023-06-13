@@ -151,8 +151,8 @@ def get_adapters():
             if new_detail == "" or new_detail.startswith(" ") or new_detail.startswith("("):
                 pass
             else:
-                id_parenthesis = new_detail.index("(")
-                if id_parenthesis > -1:
+                if "(" in new_detail:
+                    id_parenthesis = new_detail.index("(")
                     new_detail = new_detail[:id_parenthesis]
                 new_res += "\n |-|- " + new_detail.strip()
     return new_res
